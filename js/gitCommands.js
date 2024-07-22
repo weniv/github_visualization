@@ -10,6 +10,58 @@ let repoState = {
 };
 
 
+// 화면 우측 Git 상태표시 영역의 id값
+const elements = ["status-text-working", "status-text-staging", "status-text-local", "status-text-remote",
+    "status-dot-working", "status-dot-staging", "status-dot-local", "status-dot-remote"]
+   .map(id => document.getElementById(id));
+
+const [viewGitInnerTextWorking, viewGitInnerTextStaging, viewGitInnerTextLocal, viewGitInnerTextRemote,
+dotWorking, dotStaging, dotLocal, dotRemote] = elements;
+
+// 화면 우측의 Git 상태표시를 관리할 배열
+let viewState = {
+    working: [],
+    staging: [],
+    Local: [],
+    Remote: []
+}
+
+// 상태표시 영역 작동 함수 (좋은 의견 공유 바랍니다...)
+function resetDotColors() {
+    [dotWorking, dotStaging, dotLocal, dotRemote].forEach(dot => {
+        dot.classList.remove('dot-blink');
+        dot.style.backgroundColor = "#D3D7D9";
+    });
+}
+
+function updateState(viewElement, dotElement, stateArray, filename) {
+    stateArray.push(stateArray.length === 0 ? filename : ` ${filename}`);
+    viewElement.innerText = stateArray.join(', ');
+    dotElement.style.backgroundColor = "#F74E27";
+    dotElement.classList.add('dot-blink');
+}
+
+function viewGitNow(filename, status) {
+    resetDotColors();
+    switch (status) {
+        case 'working':
+            updateState(viewGitInnerTextWorking, dotWorking, viewState.working, filename);
+            break;
+        case 'staging':
+            updateState(viewGitInnerTextStaging, dotStaging, viewState.staging, filename);
+            break;
+        case 'local':
+            updateState(viewGitInnerTextLocal, dotLocal, viewState.local, filename);
+            break;
+        case 'remote':
+            updateState(viewGitInnerTextRemote, dotRemote, viewState.remote, filename);
+            break;
+        default:
+            console.error(`Unknown status: ${status}`);
+    }
+}
+
+
 // Git 명령어 실행 함수
 function executeGitCommand(command, arg) {
     switch (command) {
@@ -157,9 +209,10 @@ function gitLog() {
 }
 
 // 파일 생성 함수
-function createFile(filename) {
+function createFileAction(filename) {
     if (!repoState.files.includes(filename)) {
         repoState.files.push(filename);
+        viewGitNow(filename, 'working');
         repoState.trackedFiles[filename] = true;  // 새 파일은 변경된 것으로 표시
         return {
             success: true,
@@ -183,7 +236,8 @@ function getCurrentRepoState() {
     return { ...repoState };
 }
 
+
 // 외부에서 사용할 함수들을 노출
 window.executeGitCommand = executeGitCommand;
-window.createFile = createFile;
+window.createFileAction = createFileAction;
 window.getCurrentRepoState = getCurrentRepoState;

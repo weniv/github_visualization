@@ -247,6 +247,28 @@ main {
     overflow-y: auto;
 }
 
+.status li{
+    margin-top: 20px;
+    display: flex;
+    gap: 4px;
+}
+
+.status li:nth-child(1){
+    margin-top: 0px;
+}
+
+.status p{
+    color: #637381;
+    max-width: 304px;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    word-break: keep-all;
+}
+
 .visualization {
     max-width: 968px;
     overflow-x: auto;
@@ -255,6 +277,28 @@ main {
 .status {
     max-width: 400px;
     overflow-x: auto;
+}
+
+.status__dot{
+    margin: 7px;
+    border-radius: 3px;
+    width: 6px;
+    height: 6px;
+    background-color: #D3D7D9;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.dot-blink {
+    animation: blink 2s infinite;
+}
+
+.status__text{
+    margin-top: 4px;
 }
 
 .output {
@@ -295,6 +339,8 @@ main {
 
 /*----- 코치마크 영역 -----*/
 .coach-marks {
+    display: none;
+    /* 작업진행을 위한 none표시 */
     position: absolute;
     left: 30%;
 }
