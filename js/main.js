@@ -59,5 +59,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // 초기 시각화
     updateVisualization(getCurrentRepoState());  // 이 줄을 추가합니다.
 });
-
-// 정성훈 푸쉬 확인용
