@@ -1,0 +1,203 @@
+/* segment */
+.segment-control input[type='radio'] {
+    display: none;
+}
+
+.segment-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    background-color: var(--lightgray-color);
+}
+
+.segment-control label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    cursor: pointer;
+    flex: 1;
+}
+
+.segment-control input[type='radio']:checked + label {
+    background-color: var(--white-color);
+    border-radius: 4px;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* input */
+input[type='text'] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--black-color);
+    border: 1px solid var(--bluegray-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+input[type='text']::placeholder {
+    color: var(--bluegray-color-150);
+}
+
+input[type='text']:active,
+input[type='text']:focus {
+    border: 1px solid var(--black-color);
+}
+
+/* button */
+.btn {
+    font-weight: 400;
+    padding: 10px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.btn--black {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    padding: 16px 24px;
+    position: relative;
+    padding-left: 48px;
+    box-sizing: border-box;
+}
+
+.btn--black::before {
+    content: '';
+    background: url(./src/down.svg) no-repeat center;
+    background-size: 16px 16px;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn--black:hover {
+    background-color: #333;
+}
+
+.btn--gray {
+    background-color: var(--bluegray-color-150);
+    color: var(--white-color);
+}
+
+.btn--gray:hover {
+    background-color: var(--bluegray-color-100);
+}
+
+.btn--ghost {
+    border: 1px solid var(--gray-color);
+    color: var(--black-color);
+}
+
+.btn--ghost:hover {
+    background-color: #e4e5e8;
+}
+
+.btn--small {
+    background-color: var(--lightgray-color);
+    color: var(--black-color);
+    padding: 8px 12px;
+    font-weight: 300;
+    position: relative;
+    padding-left: 36px;
+    box-sizing: border-box;
+}
+
+.btn--small::before {
+    content: '';
+    background: url(./src/reset.svg) no-repeat center;
+    background-size: 16px 16px;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn--small:hover {
+    background-color: #e4e5e8;
+}
+
+/* command output-panel */
+#output-panel {
+    background-color: white;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+#command-output {
+    display: flex;
+    max-height: 160px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-y: scroll;
+    padding: 20px 20px 20px 48px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    position: relative;
+}
+
+.command--default {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.command--default::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: var(--bluegray-color-150);
+    border-radius: 6px;
+    position: absolute;
+    top: 27px;
+    left: 27px;
+}
+
+.command--valid {
+    border: 1px solid var(--green-color);
+    background-color: #f5fdf9;
+    color: var(--green-color);
+}
+
+.command--valid::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: var(--green-color);
+    border-radius: 6px;
+    position: absolute;
+    top: 27px;
+    left: 27px;
+}
+
+.command--error {
+    border: 1px solid var(--point-color);
+    background-color: #fff8f7;
+    color: var(--point-color);
+}
+
+.command--error::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: var(--point-color);
+    border-radius: 6px;
+    position: absolute;
+    top: 27px;
+    left: 27px;
+}

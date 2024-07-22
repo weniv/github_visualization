@@ -1,12 +1,12 @@
 @font-face {
     /* Pretendard font */
-    font-family: "Pretendard";
-    src: url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 }
 
 @font-face {
     /* Lexend font */
-    font-family: "Pretendard";
+    font-family: 'Pretendard';
     src: url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
     unicode-range: U+0020-007E;
     /* 영문, 숫자, 특수문자를 포함 한 유니코드 범위 */
@@ -45,20 +45,19 @@ html {
 :root {
     --white-color: #ffffff;
     --black-color: #222222;
-    --point-color: #F74E27;
-    --green-color: #06BF66;
-    --lightgray-color: #F0F2F4;
-    --lightgray-color-50: #EEEFF3;
-    --gray-color: #D3D7D9;
-    --bluegray-color: #919EAB;
-    --bluegray-color-50: #727A82;
-    --bluegray-color-100: #53606B;
+    --point-color: #f74e27;
+    --green-color: #06bf66;
+    --lightgray-color: #f0f2f4;
+    --lightgray-color-50: #eeeff3;
+    --gray-color: #d3d7d9;
+    --bluegray-color: #919eab;
+    --bluegray-color-50: #727a82;
+    --bluegray-color-100: #53606b;
     --bluegray-color-150: #637381;
 }
 
-
 body {
-    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
     line-height: 1.4;
     width: 100%;
     margin: 0 auto;
@@ -71,7 +70,7 @@ header {
     padding: 0 4rem;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #DFE3E8;
+    border-bottom: 1px solid #dfe3e8;
 }
 
 /*----- 로고영역 -----*/
@@ -86,7 +85,7 @@ header h1 a {
 }
 
 header h1 a img {
-    margin-right: .8rem;
+    margin-right: 0.8rem;
 }
 
 /*----- 페이지 탭 영역 -----*/
@@ -126,14 +125,14 @@ header nav ul li.active a {
 }
 
 .lang a:first-child {
-    margin-right: .8rem;
+    margin-right: 0.8rem;
 }
 
 .lang a:first-child::after {
     content: ' ';
     display: inline-block;
     vertical-align: 0;
-    margin-left: .8rem;
+    margin-left: 0.8rem;
     width: 1px;
     height: 12px;
     background: var(--bluegray-color);
@@ -166,14 +165,14 @@ main {
 .dictionary-desc {
     color: var(--bluegray-color-150);
     font-size: 1.4rem;
-    margin-top: .4rem;
+    margin-top: 0.4rem;
 }
 
-.dictionary li+li {
+.dictionary li + li {
     margin-top: 2rem;
 }
 
-.command-panel div+div:not(.btn-wrap) {
+.command-panel div + div:not(.btn-wrap) {
     margin-top: 4rem;
 }
 
@@ -205,8 +204,8 @@ main {
 .btn-refresh {
     display: flex;
     align-items: center;
-    gap: .6rem;
-    border-radius: .6rem;
+    gap: 0.6rem;
+    border-radius: 0.6rem;
     background-color: var(--lightgray-color);
     padding: 0.8rem 1.2rem;
     font-size: 1.6rem;
@@ -216,8 +215,8 @@ main {
 .btn-download {
     display: flex;
     align-items: center;
-    gap: .8rem;
-    border-radius: .6rem;
+    gap: 0.8rem;
+    border-radius: 0.6rem;
     background-color: var(--black-color);
     color: var(--white-color);
     padding: 1.65rem 2.4rem;
@@ -302,11 +301,11 @@ main {
 
 .coach-marks__list {
     background-color: var(--white-color);
-    border-radius: .8rem;
+    border-radius: 0.8rem;
     box-shadow: 0px 8px 20px rgba(99, 115, 129, 0.2);
     padding: 2rem;
     display: flex;
-    gap: .8rem;
+    gap: 0.8rem;
     max-width: 500px;
     min-height: 104px;
     position: relative;
@@ -368,139 +367,6 @@ main {
     top: calc(50% - 12px);
     right: -12px;
 }
-
-/* segment */
-.segment-control input[type='radio'] {
-    display: none;
-}
-
-.segment-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    background-color: var(--lightgray-color);
-}
-
-.segment-control label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    cursor: pointer;
-    flex: 1;
-}
-
-.segment-control input[type='radio']:checked+label {
-    background-color: var(--white-color);
-    border-radius: 4px;
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
-}
-
-/* input */
-input[type='text'] {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--black-color);
-    border: 1px solid var(--bluegray-color);
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-input[type='text']::placeholder {
-    color: var(--bluegray-color-150);
-}
-
-input[type='text']:active,
-input[type='text']:focus {
-    border: 1px solid var(--black-color);
-}
-
-/* button */
-.btn {
-    font-weight: 400;
-    padding: 10px 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-}
-
-.btn--black {
-    background-color: var(--black-color);
-    color: var(--white-color);
-    padding: 16px 24px;
-    position: relative;
-    padding-left: 48px;
-    box-sizing: border-box;
-}
-
-.btn--black::before {
-    content: '';
-    background: url(./src/down.svg) no-repeat center;
-    background-size: 16px 16px;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 24px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.btn--black:hover {
-    background-color: #333;
-}
-
-.btn--gray {
-    background-color: var(--bluegray-color-150);
-    color: var(--white-color);
-}
-
-.btn--gray:hover {
-    background-color: var(--bluegray-color-100)
-}
-
-.btn--ghost {
-    border: 1px solid var(--gray-color);
-    color: var(--black-color);
-}
-
-.btn--ghost:hover {
-    background-color: #e4e5e8;
-}
-
-.btn--small {
-    background-color: var(--lightgray-color);
-    color: var(--black-color);
-    padding: 8px 12px;
-    font-weight: 300;
-    position: relative;
-    padding-left: 36px;
-    box-sizing: border-box;
-}
-
-.btn--small::before {
-    content: '';
-    background: url(./src/reset.svg) no-repeat center;
-    background-size: 16px 16px;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.btn--small:hover {
-    background-color: #e4e5e8;
-}
-
-
 
 /* ----------------------------------------------------------- */
 /* ----------------------------------------------------------- */
@@ -576,65 +442,14 @@ input[type="text"] {
 /* ----------------------------------------------------------- */
 /* ----------------------------------------------------------- */
 
-.command--default {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-}
-
-.command--default::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background-color: var(--bluegray-color-150);
-    border-radius: 6px;
-    position: absolute;
-    top: 27px;
-    left: 27px;
-}
-
-.command--valid {
-    border: 1px solid var(--green-color);
-    background-color: #f5fdf9;
-    color: var(--green-color);
-}
-
-.command--valid::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background-color: var(--green-color);
-    border-radius: 6px;
-    position: absolute;
-    top: 27px;
-    left: 27px;
-}
-
-.command--error {
-    border: 1px solid var(--point-color);
-    background-color: #fff8f7;
-    color: var(--point-color);
-}
-
-.command--error::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background-color: var(--point-color);
-    border-radius: 6px;
-    position: absolute;
-    top: 27px;
-    left: 27px;
-}
-
 @media (max-width: 768px) {
-
     #command-panel,
     #input-panel {
         flex-direction: column;
     }
 
     button,
-    input[type="text"] {
+    input[type='text'] {
         width: 100%;
     }
 }
