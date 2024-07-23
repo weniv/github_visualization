@@ -195,9 +195,8 @@ function gitCommit(message) {
   });
 
   console.log(newCommit.files, "newCommit.files");
+
   viewGitNow(newCommit.files, "local");
-  viewState.staging = []; // 스테이징 상태 초기화
-  viewGitInnerTextStaging.innerText = "";
 
   return {
     success: true,
@@ -214,6 +213,9 @@ function gitPush() {
   if (repoState.commits.length === 0) {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
+
+  viewGitNow(viewState.local, "remote");
+
   return { success: true, message: "변경사항이 원격 저장소에 푸시되었습니다." };
 }
 

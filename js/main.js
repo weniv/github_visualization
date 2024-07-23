@@ -42,20 +42,21 @@ document.addEventListener("DOMContentLoaded", () => {
           result = { success: false, message: "커밋 메시지를 입력해주세요." };
         }
         break;
+      case "push":
+        result = executeGitCommand("push");
+        break;
       case "branch":
       case "clone":
       case "checkout":
       case "amend":
       case "pull":
-      case "push":
 
       // case 'add':
       //
       // case 'commit':
       //
       // case 'push':
-      //     result = executeGitCommand('push');
-      //     break;
+      //
       // case 'create-file':
       //     const fileName = commandText.value.trim();
       //     if (fileName) {
