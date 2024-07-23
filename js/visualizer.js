@@ -1,6 +1,6 @@
 // SVG 크기 설정
-const width = 800;
-const height = 400;
+const width = 100 + '%';
+const height = 100 + '%';
 const nodeRadius = 20;
 
 // SVG 요소 생성
@@ -24,8 +24,8 @@ function updateVisualization(repoState) {
 
     if (!repoState.isInitialized) {
         svg.append("text")
-            .attr("x", width / 2)
-            .attr("y", height / 2)
+            .attr("x", "50%")
+            .attr("y", "50%")
             .attr("text-anchor", "middle")
             .text("저장소가 초기화되지 않았습니다.");
         return;

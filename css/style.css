@@ -17,11 +17,19 @@
 ---------------------------------------------------------------- */
 html,
 body {
-    width: 100%;
-    height: 100%;
     -webkit-text-size-adjust: none;
     -moz-text-size-adjust: none;
     -ms-text-size-adjust: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+svg{
+    overflow: visible;
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 
 html {
@@ -47,6 +55,7 @@ html {
     --black-color: #222222;
     --point-color: #f74e27;
     --green-color: #06bf66;
+    --bg-color:#F4F6F8;
     --lightgray-color: #f0f2f4;
     --lightgray-color-50: #eeeff3;
     --gray-color: #d3d7d9;
@@ -60,6 +69,7 @@ body {
     font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
     line-height: 1.4;
     width: 100%;
+    height: 100vh;
     margin: 0 auto;
     font-size: 1.6rem;
     color: var(--black-color);
@@ -67,15 +77,18 @@ body {
 
 header {
     background-color: var(--white-color);
-    padding: 0 4rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     border-bottom: 1px solid #dfe3e8;
+    height: 70px;
 }
 
 /*----- 로고영역 -----*/
-header h1 {
-    width: 440px;
+
+header h1{
+    width: 23%;
+    padding: 0 4rem;
 }
 
 header h1 a {
@@ -93,19 +106,24 @@ header nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    /* width: calc(100% - 440px); */
+    width: 77%;
+    padding: 0 4rem;
     color: var(--bluegray-color);
+    height: 100%;
 }
 
 header nav ul {
     display: flex;
+    gap: 4rem;
+    height: 100%;
 }
 
 header nav ul li a {
     display: block;
     font-weight: 600;
-    padding: 2.2rem 4.4rem;
+    height: 100%;
+    line-height: 70px;
+    padding: 0 0.4rem;
     border-bottom: 2px solid transparent;
 }
 
@@ -147,16 +165,23 @@ header nav ul li.active a {
 main {
     display: flex;
     align-items: flex-start;
-    height: 100vh;
+    height: calc(100% - 70px);
 }
 
 .command-panel {
-    padding: 4rem;
     background-color: var(--white-color);
-    width: 440px;
+    width: 23%;
     height: 100%;
+    padding: 4rem;
     position: relative;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+.command-panel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
 
 .dictionary {
     margin-top: 4rem;
@@ -228,17 +253,34 @@ main {
 
 /*----- 메인영역 -----*/
 .content {
-    padding: 4rem;
-    background-color: var(--lightgray-color);
-    width: 100%;
+    width: 77%;
     height: 100%;
+    padding: 4rem;
 }
+
 
 .practice {
     display: grid;
-    grid-template-columns: minmax(max-content, 968px) minmax(max-content, 400px);
-    grid-template-rows: minmax(max-content, 537px) minmax(max-content, 180px);
+    grid-template-columns: minmax(max-content, 70%) minmax(max-content, 30%);
+    grid-template-rows: 76% 24%;
     gap: 3.2rem;
+    background-color: var(--bg-color);
+    grid-template-areas: 
+        "item1 item2"
+        "item3 item3";
+}
+
+@media (max-width: 1200px) {
+    .practice {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: 
+            "item1"
+            "item2"
+            "item3";
+    }
 }
 
 .visualization__area,
@@ -270,13 +312,11 @@ main {
 }
 
 .visualization {
-    max-width: 968px;
-    overflow-x: auto;
+    grid-area: item1;
 }
 
 .status {
-    max-width: 400px;
-    overflow-x: auto;
+    grid-area: item2;
 }
 
 .status__dot{
@@ -289,12 +329,12 @@ main {
 
 @keyframes blink {
     0% { opacity: 1; }
-    50% { opacity: 0.5; }
+    50% { opacity: 0.01; }
     100% { opacity: 1; }
 }
 
 .dot-blink {
-    animation: blink 2s infinite;
+    animation: blink 3s infinite;
 }
 
 .status__text{
@@ -302,9 +342,7 @@ main {
 }
 
 .output {
-    grid-column: 1 / 3;
-    max-width: 1400px;
-    overflow-x: auto;
+    grid-area: item3;
 }
 
 .visualization__head {
