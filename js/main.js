@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const commandButtons = document.querySelectorAll(".command-panel button");
-  const commitMessageInput = document.getElementById("commit-message");
   const outputPanel = document.getElementById("command-output");
   const commandText = document.getElementById("command-text");
 
@@ -16,46 +15,44 @@ document.addEventListener("DOMContentLoaded", () => {
     let fileName;
 
     switch (command) {
+      case "init":
+      case "status":
+      case "log":
+        result = executeGitCommand(command);
+        break;
       case "create-file":
         fileName = commandText.value.trim();
         if (fileName) {
           result = createFileAction(fileName);
           // 해당 result는 gitCommands.js로 전송됩니다.
           commandText.value = "";
-          
         } else {
           result = { success: false, message: "파일 이름을 입력해주세요." };
         }
         break;
+      case "add":
+        result = executeGitCommand("add", ".");
+        break;
       case "commit":
+        const message = commandText.value.trim();
+        if (message) {
+          result = executeGitCommand("commit", message);
+          commandText.value = "";
+        } else {
+          result = { success: false, message: "커밋 메시지를 입력해주세요." };
+        }
+        break;
       case "branch":
       case "clone":
       case "checkout":
       case "amend":
-      case "init":
       case "pull":
-      case "add":
-      case "status":
-      case "log":
       case "push":
 
-      // case 'init':
-      // case 'status':
-      // case 'log':
-      //     result = executeGitCommand(command);
-      //     break;
       // case 'add':
-      //     result = executeGitCommand('add', '.');  // 여기를 수정
-      //     break;
+      //
       // case 'commit':
-      //     const message = commitMessageInput.value.trim();
-      //     if (message) {
-      //         result = executeGitCommand('commit', message);
-      //         commitMessageInput.value = '';
-      //     } else {
-      //         result = { success: false, message: '커밋 메시지를 입력해주세요.' };
-      //     }
-      //     break;
+      //
       // case 'push':
       //     result = executeGitCommand('push');
       //     break;
