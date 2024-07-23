@@ -343,6 +343,10 @@ main {
 
 .output {
     grid-area: item3;
+    background-color: white;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    padding: 20px;
 }
 
 .visualization__head {

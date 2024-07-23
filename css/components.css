@@ -130,12 +130,6 @@ input[type='text']:focus {
 }
 
 /* command output-panel */
-#output-panel {
-    background-color: white;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    padding: 20px;
-}
 
 #command-output {
     
