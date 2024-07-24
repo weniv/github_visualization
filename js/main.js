@@ -2,6 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const commandButtons = document.querySelectorAll(".command-panel button");
   const outputPanel = document.getElementById("command-output");
   const commandText = document.getElementById("command-text");
+  const refreshBtn = document.querySelector(".btn-refresh");
+
+  function refresh() {
+    location.reload();
+  }
+
+  refreshBtn.addEventListener("click", refresh);
 
   // 명령어 버튼 이벤트 리스너 등록
   commandButtons.forEach((button) => {
@@ -31,7 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         break;
       case "add":
-        result = executeGitCommand("add", ".");
+        result = executeGitCommand("add", commandText.value !== "" ? commandText.value : ".");
+        commandText.value = "";
         break;
       case "commit":
         const message = commandText.value.trim();
