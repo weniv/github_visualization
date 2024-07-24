@@ -1,6 +1,11 @@
 {
   "commands": [
     {
+      "command": "init",
+      "error": "fatal: already a git repository",
+      "solution": "이미 git 저장소인 경우 init을 다시 할 필요가 없습니다."
+    },
+    {
       "command": "add",
       "error": "fatal: Pathspec '파일명' did not match any files",
       "translation": "지정한 '파일명'과 일치하는 파일이 없습니다.",
@@ -10,6 +15,21 @@
       "command": "commit",
       "error": "Aborting commit due to empty commit message",
       "solution": "커밋 메시지를 입력합니다. (예: git commit -m \"커밋 메시지\")"
+    },
+    {
+      "command": "amend",
+      "error": "fatal: You are in the middle of a merge -- cannot amend.",
+      "solution": "현재 병합 중인 상태에서는 amend를 사용할 수 없습니다. 병합을 완료하거나 취소 후 사용합니다."
+    },
+    {
+      "command": "status",
+      "error": "fatal: not a git repository",
+      "solution": "git 저장소 내에서 명령어를 실행하거나, git init으로 새 저장소를 생성합니다."
+    },
+    {
+      "command": "log",
+      "error": "fatal: your current branch 'master' does not have any commits yet",
+      "solution": "먼저 커밋을 생성한 후 log를 확인합니다."
     },
     {
       "command": "push",
@@ -26,21 +46,7 @@
       "error": "fatal: destination path 'repo' already exists and is not an empty directory",
       "solution": "클론할 디렉토리를 비우거나 다른 이름으로 클론합니다."
     },
-    {
-      "command": "init",
-      "error": "fatal: already a git repository",
-      "solution": "이미 git 저장소인 경우 init을 다시 할 필요가 없습니다."
-    },
-    {
-      "command": "status",
-      "error": "fatal: not a git repository",
-      "solution": "git 저장소 내에서 명령어를 실행하거나, git init으로 새 저장소를 생성합니다."
-    },
-    {
-      "command": "log",
-      "error": "fatal: your current branch 'master' does not have any commits yet",
-      "solution": "먼저 커밋을 생성한 후 log를 확인합니다."
-    },
+
     {
       "command": "branch",
       "error": "fatal: Not a valid object name: 'master'",
@@ -50,11 +56,6 @@
       "command": "checkout",
       "error": "error: pathspec '브랜치명' did not match any file(s) known to git",
       "solution": "브랜치 이름을 정확히 입력하거나, 해당 브랜치를 먼저 생성합니다."
-    },
-    {
-      "command": "amend",
-      "error": "fatal: You are in the middle of a merge -- cannot amend.",
-      "solution": "현재 병합 중인 상태에서는 amend를 사용할 수 없습니다. 병합을 완료하거나 취소 후 사용합니다."
     }
   ]
 }
