@@ -61,6 +61,10 @@
     * 튜토리얼 구현(JSON 형태로 구현)
     * hover 했을 때 나오는 메시지 구현
 
+## 폴더와 파일 구조
+* js/commands.json
+* js/tutorial.json
+
 ## 오픈소스 기여자
 * 강지혜
 * 김민서
