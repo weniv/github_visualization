@@ -255,16 +255,6 @@ function gitPush() {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
 
-  // const newCommits = repoState.commits.map((commit) => {
-  //   return {
-  //     id: commit.id,
-  //     files: commit.files,
-  //     message: commit.message,
-  //   };
-  // });
-
-  // console.log(repoState.commits);
-  // console.log(newCommits);
 
   // 새로운 커밋의 값과 비교하여
   // 이미 remote Repository에 있는 파일은 메시지만 변경
