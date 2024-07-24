@@ -357,6 +357,8 @@ main {
 }
 
 .visualization__head {
+    position: relative;
+    z-index: 100;
     display: flex;
     justify-content: space-between;
 }
