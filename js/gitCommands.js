@@ -48,9 +48,42 @@ function resetDotColors() {
   });
 }
 
-function updateState(viewElement, dotElement, stateArray, filename) {
-  stateArray.push(stateArray.length === 0 ? filename : ` ${filename}`);
-  viewElement.innerText = stateArray.join(", ");
+// directory 관련 변수
+const commit = "commit";
+const remote = "remote";
+function updateState(
+  viewElement,
+  dotElement,
+  stateArray,
+  filename,
+  directory = "local"
+) {
+  // if (!stateArray.includes(filename)) {
+  //   stateArray.push(filename);
+  // }
+
+  if (directory === commit || directory === remote) {
+    if (directory === commit) {
+      const commitText = stateArray.map(
+        (el) => `(message:${el.message}, file:${el.files
+          .map((file) => file)
+          .join(", ")}
+    )`
+      );
+      viewElement.innerText = commitText.join("");
+    } else {
+      const commitText = stateArray.map(
+        (el) => `${el.file}: ${el.message}`
+      );
+      viewElement.innerText = commitText.join("\n");
+
+      viewGitInnerTextStaging.textContent = "";
+      viewGitInnerTextLocal.textContent = "";
+    }
+  } else {
+    viewElement.innerText = stateArray.join(", ");
+  }
+
   dotElement.style.backgroundColor = "#F74E27";
   dotElement.classList.add("dot-blink");
 }
@@ -62,7 +95,7 @@ function viewGitNow(filename, status) {
       updateState(
         viewGitInnerTextWorking,
         dotWorking,
-        viewState.working,
+        repoState.files,
         filename
       );
       break;
@@ -70,19 +103,26 @@ function viewGitNow(filename, status) {
       updateState(
         viewGitInnerTextStaging,
         dotStaging,
-        viewState.staging,
+        repoState.staging,
         filename
       );
       break;
     case "local":
-      updateState(viewGitInnerTextLocal, dotLocal, viewState.local, filename);
+      updateState(
+        viewGitInnerTextLocal,
+        dotLocal,
+        repoState.commits,
+        filename,
+        commit
+      );
       break;
     case "remote":
       updateState(
         viewGitInnerTextRemote,
         dotRemote,
         viewState.remote,
-        filename
+        filename,
+        remote
       );
       break;
     default:
@@ -187,6 +227,7 @@ function gitCommit(message) {
     parent: repoState.branches[repoState.currentBranch],
   };
   repoState.commits.push(newCommit);
+  repoState.staging = [];
   repoState.branches[repoState.currentBranch] = newCommit.id;
 
   // 커밋된 파일들의 상태를 업데이트
@@ -214,8 +255,36 @@ function gitPush() {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
 
-  viewGitNow(viewState.local, "remote");
+  // const newCommits = repoState.commits.map((commit) => {
+  //   return {
+  //     id: commit.id,
+  //     files: commit.files,
+  //     message: commit.message,
+  //   };
+  // });
 
+  // console.log(repoState.commits);
+  // console.log(newCommits);
+
+  // 새로운 커밋의 값과 비교하여
+  // 이미 remote Repository에 있는 파일은 메시지만 변경
+  // 파일이 없다면 파일과 메시지를 추가
+  const updatedFiles = [];
+  repoState.commits.forEach((commit) => {
+    commit.files.forEach((file) => {
+      const existingFile = viewState.remote.find((f) => f.file === file);
+      if (existingFile) {
+        existingFile.message = commit.message; // 메시지만 업데이트
+      } else {
+        viewState.remote.push({ file, message: commit.message });
+      }
+      updatedFiles.push({ file, message: commit.message });
+    });
+  });
+
+  viewGitNow(updatedFiles, "remote");
+
+  repoState.commits = [];
   return { success: true, message: "변경사항이 원격 저장소에 푸시되었습니다." };
 }
 
