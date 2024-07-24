@@ -3,6 +3,7 @@
     {
       "command": "git add",
       "error": "fatal: Pathspec '파일명' did not match any files",
+      "translation": "지정한 '파일명'과 일치하는 파일이 없습니다.",
       "solution": "파일 이름과 경로를 정확히 확인하고 입력합니다."
     },
     {
