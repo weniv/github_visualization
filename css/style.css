@@ -343,6 +343,10 @@ main {
     margin-top: 4px;
 }
 
+.status__text span {
+    display: block;
+}
+
 .output {
     grid-area: item3;
     background-color: white;

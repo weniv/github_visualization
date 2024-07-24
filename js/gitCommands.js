@@ -64,24 +64,28 @@ function updateState(
 
   if (directory === commit || directory === remote) {
     if (directory === commit) {
-      const commitText = stateArray.map(
-        (el) => `(message:${el.message}, file:${el.files
+      const commitText = stateArray.map((el) => {
+        viewState.local.push(`<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`);
+
+        return `(message:${el.message}, file:${el.files
           .map((file) => file)
           .join(", ")}
-    )`
-      );
-      viewElement.innerText = commitText.join("");
+          )`;
+      });
+      viewElement.innerText +=
+        (viewElement.innerText === "")
+          ? `${commitText.join("")}`
+          : `\n${commitText.join("")}`;
     } else {
-      const commitText = stateArray.map(
-        (el) => `${el.file}: ${el.message}`
-      );
+      const commitText = stateArray.map((el) => `${el.file}: ${el.message}`);
       viewElement.innerText = commitText.join("\n");
 
       viewGitInnerTextStaging.textContent = "";
       viewGitInnerTextLocal.textContent = "";
+      viewGitInnerTextLocal.insertAdjacentHTML("beforeend",viewState.local.join(''));
     }
   } else {
-    viewElement.innerText = stateArray.join(", ");
+    viewElement.innerText = `${stateArray.join("\n")}`;
   }
 
   dotElement.style.backgroundColor = "#F74E27";
@@ -254,7 +258,6 @@ function gitPush() {
   if (repoState.commits.length === 0) {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
-
 
   // 새로운 커밋의 값과 비교하여
   // 이미 remote Repository에 있는 파일은 메시지만 변경
