@@ -281,9 +281,11 @@ main {
             "item2"
             "item3";
     }
+    .visualization{
+        height: 400px;
+    }
 }
 
-.visualization__area,
 .status ul {
     max-height: calc(587px - 8rem);
     overflow-y: auto;
@@ -349,9 +351,29 @@ main {
     padding: 20px;
 }
 
+.visualization__area{
+    height: 100%;
+    
+}
+
 .visualization__head {
     display: flex;
     justify-content: space-between;
+}
+
+.visualization__body{
+    position: relative;
+    top: -75px;
+    left: -40px;
+    height: calc(100% + 78px);
+    width:calc(100% + 80px);
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.visualization__body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 
 .content__list {

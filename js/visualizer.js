@@ -1,17 +1,18 @@
 // SVG 크기 설정
 const width = 100 + '%';
 const height = 100 + '%';
-const nodeRadius = 20;
 
 // SVG 요소 생성
 let svg = d3.select("#visualization-area")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
+    
 
 // 그룹 요소 생성
 let g = svg.append("g")
-    .attr("transform", `translate(50, ${height / 2})`);
+    .attr("transform", `translate(80, 120)`);
+
 
 // 시각화 업데이트 함수
 function updateVisualization(repoState) {
@@ -20,7 +21,7 @@ function updateVisualization(repoState) {
 
     // 그룹 요소 재생성
     g = svg.append("g")
-        .attr("transform", `translate(50, ${height / 2})`);
+        .attr("transform", `translate(80, 120)`);
 
     if (!repoState.isInitialized) {
         svg.append("text")
@@ -104,20 +105,20 @@ function updateVisualization(repoState) {
 
     // 현재 브랜치 표시
     svg.append("text")
-        .attr("x", 10)
-        .attr("y", 20)
-        .text(`Current Branch: ${repoState.currentBranch}`);
+        .attr("x", 130)
+        .attr("y", -19)
+        .text(`${repoState.currentBranch}`);
 
     // 파일 상태 표시
     const fileStatus = svg.append("g")
         .attr("transform", `translate(10, ${height - 60})`);
 
-    fileStatus.append("text")
-        .text(`Working Directory: ${repoState.files.join(", ")}`);
+    // fileStatus.append("text")
+    //     .text(`Working Directory: ${repoState.files.join(", ")}`);
 
-    fileStatus.append("text")
-        .attr("y", 20)
-        .text(`Staging Area: ${repoState.staging.join(", ")}`);
+    // fileStatus.append("text")
+    //     .attr("y", 20)
+    //     .text(`Staging Area: ${repoState.staging.join(", ")}`);
 }
 
 // 텍스트 줄바꿈 함수
