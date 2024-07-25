@@ -328,8 +328,8 @@ function gitBranch(branchName) {
       branch === repoState.currentBranch ? `*${branch}` : branch
     );
     return {
-      success: true,
-      message: branchList.join("\n"),
+      success: false,
+      message: `브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.\n현재 생성된 브랜치: ${branchList.join("\n")}`,
     };
   }
 
