@@ -38,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         break;
       case "add":
-        result = executeGitCommand("add", commandText.value !== "" ? commandText.value : ".");
+        result = executeGitCommand(
+          "add",
+          commandText.value !== "" ? commandText.value : "."
+        );
         commandText.value = "";
         break;
       case "commit":
@@ -54,6 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
         result = executeGitCommand("push");
         break;
       case "branch":
+        result = executeGitCommand("branch", commandText.value);
+        commandText.value = "";
+        break;
+
       case "clone":
       case "checkout":
       case "amend":

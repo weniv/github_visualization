@@ -4,8 +4,8 @@ let repoState = {
   files: [],
   staging: [],
   commits: [],
-  currentBranch: "master",
-  branches: { master: null },
+  currentBranch: "main",
+  branches: { main: null },
   trackedFiles: {}, // 파일 이름을 키로, 마지막 커밋 이후 변경 여부를 값으로 가집니다.
 };
 
@@ -65,7 +65,9 @@ function updateState(
   if (directory === commit || directory === remote) {
     if (directory === commit) {
       const commitText = stateArray.map((el) => {
-        viewState.local.push(`<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`);
+        viewState.local.push(
+          `<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`
+        );
 
         return `(message:${el.message}, file:${el.files
           .map((file) => file)
@@ -73,7 +75,7 @@ function updateState(
           )`;
       });
       viewElement.innerText +=
-        (viewElement.innerText === "")
+        viewElement.innerText === ""
           ? `${commitText.join("")}`
           : `\n${commitText.join("")}`;
     } else {
@@ -82,7 +84,10 @@ function updateState(
 
       viewGitInnerTextStaging.textContent = "";
       viewGitInnerTextLocal.textContent = "";
-      viewGitInnerTextLocal.insertAdjacentHTML("beforeend",viewState.local.join(''));
+      viewGitInnerTextLocal.insertAdjacentHTML(
+        "beforeend",
+        viewState.local.join("")
+      );
     }
   } else {
     viewElement.innerText = `${stateArray.join("\n")}`;
@@ -149,6 +154,8 @@ function executeGitCommand(command, arg) {
       return gitStatus();
     case "log":
       return gitLog();
+    case "branch":
+      return gitBranch(arg);
     default:
       return { success: false, message: "알 수 없는 명령어입니다." };
   }
@@ -307,6 +314,45 @@ function gitLog() {
     .map((commit) => `커밋: ${commit.id}\n메시지: ${commit.message}\n`)
     .join("\n");
   return { success: true, message: log };
+}
+
+function gitBranch(branchName) {
+  if (!repoState.isInitialized) {
+    return { success: false, message: "Git 저장소가 초기화되지 않았습니다." };
+  }
+
+  if (!branchName) {
+    // 브랜치명 출력
+    // 브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.
+    const branchList = Object.keys(repoState.branches).map((branch) =>
+      branch === repoState.currentBranch ? `*${branch}` : branch
+    );
+    return {
+      success: true,
+      message: branchList.join("\n"),
+    };
+  }
+
+  if (repoState.commits.length === 0) {
+    return {
+      success: false,
+      message: "최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다.",
+    };
+  }
+
+  if (repoState.branches.hasOwnProperty(branchName)) {
+    return {
+      success: false,
+      message: `${branchName} 브랜치가 이미 존재합니다.`,
+    };
+  }
+
+  // 브랜치 생성
+  repoState.branches[branchName] = null;
+  return {
+    success: true,
+    message: `${branchName} 브랜치가 새로 생성되었습니다.`,
+  };
 }
 
 // 파일 생성 함수
