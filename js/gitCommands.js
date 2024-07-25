@@ -4,8 +4,8 @@ let repoState = {
   files: [],
   staging: [],
   commits: [],
-  currentBranch: "master",
-  branches: { master: null },
+  currentBranch: "main",
+  branches: { main: null },
   trackedFiles: {}, // 파일 이름을 키로, 마지막 커밋 이후 변경 여부를 값으로 가집니다.
 };
 
@@ -48,9 +48,51 @@ function resetDotColors() {
   });
 }
 
-function updateState(viewElement, dotElement, stateArray, filename) {
-  stateArray.push(stateArray.length === 0 ? filename : ` ${filename}`);
-  viewElement.innerText = stateArray.join(", ");
+// directory 관련 변수
+const commit = "commit";
+const remote = "remote";
+function updateState(
+  viewElement,
+  dotElement,
+  stateArray,
+  filename,
+  directory = "local"
+) {
+  // if (!stateArray.includes(filename)) {
+  //   stateArray.push(filename);
+  // }
+
+  if (directory === commit || directory === remote) {
+    if (directory === commit) {
+      const commitText = stateArray.map((el) => {
+        viewState.local.push(
+          `<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`
+        );
+
+        return `(message:${el.message}, file:${el.files
+          .map((file) => file)
+          .join(", ")}
+          )`;
+      });
+      viewElement.innerText +=
+        viewElement.innerText === ""
+          ? `${commitText.join("")}`
+          : `\n${commitText.join("")}`;
+    } else {
+      const commitText = stateArray.map((el) => `${el.file}: ${el.message}`);
+      viewElement.innerText = commitText.join("\n");
+
+      viewGitInnerTextStaging.textContent = "";
+      viewGitInnerTextLocal.textContent = "";
+      viewGitInnerTextLocal.insertAdjacentHTML(
+        "beforeend",
+        viewState.local.join("")
+      );
+    }
+  } else {
+    viewElement.innerText = `${stateArray.join("\n")}`;
+  }
+
   dotElement.style.backgroundColor = "#F74E27";
   dotElement.classList.add("dot-blink");
 }
@@ -62,7 +104,7 @@ function viewGitNow(filename, status) {
       updateState(
         viewGitInnerTextWorking,
         dotWorking,
-        viewState.working,
+        repoState.files,
         filename
       );
       break;
@@ -70,19 +112,26 @@ function viewGitNow(filename, status) {
       updateState(
         viewGitInnerTextStaging,
         dotStaging,
-        viewState.staging,
+        repoState.staging,
         filename
       );
       break;
     case "local":
-      updateState(viewGitInnerTextLocal, dotLocal, viewState.local, filename);
+      updateState(
+        viewGitInnerTextLocal,
+        dotLocal,
+        repoState.commits,
+        filename,
+        commit
+      );
       break;
     case "remote":
       updateState(
         viewGitInnerTextRemote,
         dotRemote,
         viewState.remote,
-        filename
+        filename,
+        remote
       );
       break;
     default:
@@ -105,6 +154,8 @@ function executeGitCommand(command, arg) {
       return gitStatus();
     case "log":
       return gitLog();
+    case "branch":
+      return gitBranch(arg);
     default:
       return { success: false, message: "알 수 없는 명령어입니다." };
   }
@@ -187,6 +238,7 @@ function gitCommit(message) {
     parent: repoState.branches[repoState.currentBranch],
   };
   repoState.commits.push(newCommit);
+  repoState.staging = [];
   repoState.branches[repoState.currentBranch] = newCommit.id;
 
   // 커밋된 파일들의 상태를 업데이트
@@ -214,8 +266,25 @@ function gitPush() {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
 
-  viewGitNow(viewState.local, "remote");
+  // 새로운 커밋의 값과 비교하여
+  // 이미 remote Repository에 있는 파일은 메시지만 변경
+  // 파일이 없다면 파일과 메시지를 추가
+  const updatedFiles = [];
+  repoState.commits.forEach((commit) => {
+    commit.files.forEach((file) => {
+      const existingFile = viewState.remote.find((f) => f.file === file);
+      if (existingFile) {
+        existingFile.message = commit.message; // 메시지만 업데이트
+      } else {
+        viewState.remote.push({ file, message: commit.message });
+      }
+      updatedFiles.push({ file, message: commit.message });
+    });
+  });
 
+  viewGitNow(updatedFiles, "remote");
+
+  repoState.commits = [];
   return { success: true, message: "변경사항이 원격 저장소에 푸시되었습니다." };
 }
 
@@ -245,6 +314,45 @@ function gitLog() {
     .map((commit) => `커밋: ${commit.id}\n메시지: ${commit.message}\n`)
     .join("\n");
   return { success: true, message: log };
+}
+
+function gitBranch(branchName) {
+  if (!repoState.isInitialized) {
+    return { success: false, message: "Git 저장소가 초기화되지 않았습니다." };
+  }
+
+  if (!branchName) {
+    // 브랜치명 출력
+    // 브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.
+    const branchList = Object.keys(repoState.branches).map((branch) =>
+      branch === repoState.currentBranch ? `*${branch}` : branch
+    );
+    return {
+      success: true,
+      message: branchList.join("\n"),
+    };
+  }
+
+  if (repoState.commits.length === 0) {
+    return {
+      success: false,
+      message: "최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다.",
+    };
+  }
+
+  if (repoState.branches.hasOwnProperty(branchName)) {
+    return {
+      success: false,
+      message: `${branchName} 브랜치가 이미 존재합니다.`,
+    };
+  }
+
+  // 브랜치 생성
+  repoState.branches[branchName] = null;
+  return {
+    success: true,
+    message: `${branchName} 브랜치가 새로 생성되었습니다.`,
+  };
 }
 
 // 파일 생성 함수

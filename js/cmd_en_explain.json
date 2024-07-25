@@ -1,0 +1,59 @@
+{
+    "commands": [
+        {
+            "command": "init",
+            "syntax": "git init",
+            "description": "initialize Git, add new repository."
+        },
+        {
+            "command": "add",
+            "syntax": "git add 파일이름",
+            "description": "add changes to the staging area."
+        },
+        {
+            "command": "commit",
+            "syntax": "git commit -m \"changes\"",
+            "description": "record changes to the local reposiroty. write changes inside quotation mark(\" \")."
+        },
+        {
+            "command": "amend",
+            "syntax": "git commit --amend",
+            "description": "amend latest command recorded in local repository"
+        },
+        {
+            "command": "status",
+            "syntax": "git status",
+            "description": "displays the state of the working directory and the staging area."
+        },
+        {
+            "command": "log",
+            "syntax": "git log",
+            "description": "list commit log using 'git commit' commands."
+        },
+        {
+            "command": "push",
+            "syntax": "git push 'remote repository' 'branch'",
+            "description": "upload changes to remote repository."
+        },
+        {
+            "command": "pull",
+            "syntax": "git pull",
+            "description": "fetch changes to local repository."
+        },
+        {
+            "command": "clone",
+            "syntax": "git clone https://github.com/user-name/repository-name.git",
+            "description": "clone remote repository's  whole information to local repository "
+        },
+        {
+            "command": "branch",
+            "syntax": "git branch 'branch name'",
+            "description": "create branch naming 'branch name', branch refers independent development process."
+        },
+        {
+            "command": "checkout",
+            "syntax": "git checkout 'another branch'",
+            "description": "switch branch to 'another branch."
+        }
+    ]
+}
