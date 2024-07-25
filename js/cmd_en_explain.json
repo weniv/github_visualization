@@ -7,7 +7,7 @@
         },
         {
             "command": "add",
-            "syntax": "git add 파일이름",
+            "syntax": "git add file-name",
             "description": "add changes to the staging area."
         },
         {
