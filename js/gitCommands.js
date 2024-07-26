@@ -336,7 +336,7 @@ function gitBranch(branchName) {
   if (repoState.commits.length === 0) {
     return {
       success: false,
-      message: "최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다.",
+      message: "레포지토리에 최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다.",
     };
   }
 
