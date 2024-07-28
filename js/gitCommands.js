@@ -65,28 +65,34 @@ function updateState(
   if (directory === commit || directory === remote) {
     if (directory === commit) {
       const commitText = stateArray.map((el) => {
-        viewState.local.push(
-          `<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`
-        );
-
         return `(message:${el.message}, file:${el.files
           .map((file) => file)
           .join(", ")}
           )`;
       });
-      viewElement.innerText +=
-        viewElement.innerText === ""
-          ? `${commitText.join("")}`
-          : `\n${commitText.join("")}`;
-    } else {
-      const commitText = stateArray.map((el) => `${el.file}: ${el.message}`);
-      viewElement.innerText = commitText.join("\n");
 
       viewGitInnerTextStaging.textContent = "";
+      viewElement.insertAdjacentHTML(
+        "beforeend",
+        commitText[commitText.length-1]
+      );
+    } else {
+      const commitText = repoState.commits.map((el) => {
+        const log = `${el.id}[${el.files
+          .map((file) => file)
+          .join(", ")}]`;
+        return `<span>${log}</span>`;
+      });
+
+      console.log(commitText)
+
+      const pushText = stateArray.map((el) => `${el.file}: ${el.message}`);
+      viewElement.innerText = pushText.join("\n");
+
       viewGitInnerTextLocal.textContent = "";
       viewGitInnerTextLocal.insertAdjacentHTML(
         "beforeend",
-        viewState.local.join("")
+        commitText.join("")
       );
     }
   } else {
@@ -249,6 +255,7 @@ function gitCommit(message) {
     message: message,
     files: [...repoState.staging],
     parent: repoState.branches[repoState.currentBranch],
+    log:""
   };
   repoState.commits.push(newCommit);
   repoState.staging = [];
@@ -297,7 +304,6 @@ function gitPush() {
 
   viewGitNow(updatedFiles, "remote");
 
-  repoState.commits = [];
   return { success: true, message: "변경사항이 원격 저장소에 푸시되었습니다." };
 }
 
