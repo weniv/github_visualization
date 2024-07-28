@@ -62,8 +62,27 @@
     * hover 했을 때 나오는 메시지 구현
 
 ## 폴더와 파일 구조
-* js/commands.json
-* js/tutorial.json
+📦github_visualization
+ ┣ 📂css
+ ┃ ┣ 📜components.css
+ ┃ ┣ 📜reset.css
+ ┃ ┗ 📜style.css
+ ┣ 📂images
+ ┃ ┣ 📜git_logo.svg
+ ┃ ┣ 📜ico_download.svg
+ ┃ ┣ 📜ico_help.svg
+ ┃ ┗ 📜ico_refresh.svg
+ ┣ 📂js
+ ┃ ┣ 📜cmd_en_explain.json
+ ┃ ┣ 📜cmd_error.json
+ ┃ ┣ 📜cmd_ko_explain.json
+ ┃ ┣ 📜gitCommands.js
+ ┃ ┣ 📜main.js
+ ┃ ┣ 📜tutorial.json
+ ┃ ┗ 📜visualizer.js
+ ┣ 📜CNAME
+ ┣ 📜index.html
+ ┗ 📜README.md
 
 ## 오픈소스 기여자
 * 강지혜
