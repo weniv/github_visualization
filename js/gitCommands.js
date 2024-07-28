@@ -144,6 +144,8 @@ function executeGitCommand(command, arg) {
   switch (command) {
     case "init":
       return gitInit();
+    case "clone":
+      return gitClone();
     case "add":
       return gitAdd(arg);
     case "commit":
@@ -168,6 +170,17 @@ function gitInit() {
   }
   repoState.isInitialized = true;
   return { success: true, message: "빈 Git 저장소가 초기화되었습니다." };
+}
+
+// git clone
+function gitClone() {
+  if (repoState.isInitialized) {
+    return { success: false, message: "저장소가 이미 초기화되어 있습니다." };
+  }
+  repoState.isInitialized = true;
+  repoState.branches["develop1"] = null;
+  repoState.branches["develop2"] = null;
+  return { success: true, message: "클론 되었습니다" };
 }
 
 // git add .
@@ -329,14 +342,17 @@ function gitBranch(branchName) {
     );
     return {
       success: false,
-      message: `브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.\n현재 생성된 브랜치: ${branchList.join("\n")}`,
+      message: `브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.\n현재 생성된 브랜치: ${branchList.join(
+        "\n"
+      )}`,
     };
   }
 
   if (repoState.commits.length === 0) {
     return {
       success: false,
-      message: "레포지토리에 최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다.",
+      message:
+        "레포지토리에 최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다.",
     };
   }
 
