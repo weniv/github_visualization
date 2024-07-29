@@ -117,7 +117,7 @@ function updateState(
     viewGitInnerTextLocal.insertAdjacentHTML("beforeend", commitText.join(""));
   } else {
     // 그 외
-    viewElement.innerText = `${stateArray.join("\n")}`;
+    viewElement.innerText = `${stateArray.join(", ")}`;
   }
 
   dotElement.style.backgroundColor = "#F74E27";
