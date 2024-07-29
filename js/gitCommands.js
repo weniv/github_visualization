@@ -66,7 +66,6 @@ function updateState(
   // }
 
   if (directory === commit || directory === checkout) {
-    
     viewGitInnerTextStaging.textContent = "";
     if (directory === commit) {
       // commit일 때
@@ -83,11 +82,15 @@ function updateState(
       );
     } else {
       // checkout일 때
-      const pushText = viewState.remote.map((el) => `${el.file}: ${el.message}`);
+      const pushText = viewState.remote.map(
+        (el) => `${el.file}: ${el.message}`
+      );
       const logIds = new Set(viewState.remote.map((el) => el.commitId));
       const commitText = stateArray.map((el) => {
-        if(logIds.has(el.id)) {
-          return `<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`
+        if (logIds.has(el.id)) {
+          return `<span>${el.id}[${el.files
+            .map((file) => file)
+            .join(", ")}]</span>`;
         } else {
           return `(message:${el.message}, file:${el.files
             .map((file) => file)
@@ -98,7 +101,7 @@ function updateState(
 
       viewGitInnerTextLocal.textContent = "";
       viewGitInnerTextRemote.innerText = pushText.join("\n");
-        viewElement.insertAdjacentHTML("beforeend", commitText.join("\n"));
+      viewElement.insertAdjacentHTML("beforeend", commitText.join("\n"));
     }
   } else if (directory === remote) {
     // remote일 때
@@ -112,7 +115,6 @@ function updateState(
 
     viewGitInnerTextLocal.textContent = "";
     viewGitInnerTextLocal.insertAdjacentHTML("beforeend", commitText.join(""));
-
   } else {
     // 그 외
     viewElement.innerText = `${stateArray.join("\n")}`;
@@ -308,7 +310,7 @@ function gitCommit(message) {
     message: message,
     files: [...repoState.staging],
     parent: repoState.branches[repoState.currentBranch],
-    log:""
+    log: "",
   };
   repoState.commits.push(newCommit);
   repoState.staging = [];
@@ -395,13 +397,12 @@ function gitBranch(branchName) {
 
   if (!branchName) {
     // 브랜치명 출력
-    // 브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.
     const branchList = Object.keys(repoState.branches).map((branch) =>
       branch === repoState.currentBranch ? `*${branch}` : branch
     );
     return {
       success: false,
-      message: `브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.\n현재 생성된 브랜치: ${branchList.join(
+      message: `브랜치를 추가하고 싶다면 브랜치명을 입력해 주세요.\n생성된 브랜치:\n ${branchList.join(
         "\n"
       )}`,
     };
@@ -424,7 +425,13 @@ function gitBranch(branchName) {
 
   // 브랜치 생성
   repoState.branches[branchName] = null;
-  addBranchStatus(branchName, repoState.files, repoState.staging, repoState.commits, viewState.remote);
+  addBranchStatus(
+    branchName,
+    repoState.files,
+    repoState.staging,
+    repoState.commits,
+    viewState.remote
+  );
   return {
     success: true,
     message: `${branchName} 브랜치가 새로 생성되었습니다.`,
