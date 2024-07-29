@@ -65,6 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
         result = executeGitCommand("clone");
         break;
       case "checkout":
+        result = executeGitCommand("checkout", commandText.value);
+        commandText.value = "";
+        break;
       case "amend":
       case "pull":
 

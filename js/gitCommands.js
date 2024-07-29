@@ -9,6 +9,8 @@ let repoState = {
   trackedFiles: {}, // 파일 이름을 키로, 마지막 커밋 이후 변경 여부를 값으로 가집니다.
 };
 
+const branches = [];
+
 // 화면 우측 Git 상태표시 영역의 id값
 const elements = [
   "status-text-working",
@@ -51,6 +53,7 @@ function resetDotColors() {
 // directory 관련 변수
 const commit = "commit";
 const remote = "remote";
+const checkout = "checkout";
 function updateState(
   viewElement,
   dotElement,
@@ -62,8 +65,11 @@ function updateState(
   //   stateArray.push(filename);
   // }
 
-  if (directory === commit || directory === remote) {
+  if (directory === commit || directory === checkout) {
+    
+    viewGitInnerTextStaging.textContent = "";
     if (directory === commit) {
+      // commit일 때
       const commitText = stateArray.map((el) => {
         return `(message:${el.message}, file:${el.files
           .map((file) => file)
@@ -71,31 +77,44 @@ function updateState(
           )`;
       });
 
-      viewGitInnerTextStaging.textContent = "";
       viewElement.insertAdjacentHTML(
         "beforeend",
-        commitText[commitText.length-1]
+        commitText[commitText.length - 1]
       );
     } else {
-      const commitText = repoState.commits.map((el) => {
-        const log = `${el.id}[${el.files
-          .map((file) => file)
-          .join(", ")}]`;
-        return `<span>${log}</span>`;
+      // checkout일 때
+      const pushText = viewState.remote.map((el) => `${el.file}: ${el.message}`);
+      const logIds = new Set(viewState.remote.map((el) => el.commitId));
+      const commitText = stateArray.map((el) => {
+        if(logIds.has(el.id)) {
+          return `<span>${el.id}[${el.files.map((file) => file).join(", ")}]</span>`
+        } else {
+          return `(message:${el.message}, file:${el.files
+            .map((file) => file)
+            .join(", ")}
+            )`;
+        }
       });
 
-      console.log(commitText)
-
-      const pushText = stateArray.map((el) => `${el.file}: ${el.message}`);
-      viewElement.innerText = pushText.join("\n");
-
       viewGitInnerTextLocal.textContent = "";
-      viewGitInnerTextLocal.insertAdjacentHTML(
-        "beforeend",
-        commitText.join("")
-      );
+      viewGitInnerTextRemote.innerText = pushText.join("\n");
+        viewElement.insertAdjacentHTML("beforeend", commitText.join("\n"));
     }
+  } else if (directory === remote) {
+    // remote일 때
+    const commitText = repoState.commits.map((el) => {
+      const log = `${el.id}[${el.files.map((file) => file).join(", ")}]`;
+      return `<span>${log}</span>`;
+    });
+
+    const pushText = stateArray.map((el) => `${el.file}: ${el.message}`);
+    viewElement.innerText = pushText.join("\n");
+
+    viewGitInnerTextLocal.textContent = "";
+    viewGitInnerTextLocal.insertAdjacentHTML("beforeend", commitText.join(""));
+
   } else {
+    // 그 외
     viewElement.innerText = `${stateArray.join("\n")}`;
   }
 
@@ -131,6 +150,15 @@ function viewGitNow(filename, status) {
         commit
       );
       break;
+    case "checkout":
+      updateState(
+        viewGitInnerTextLocal,
+        dotLocal,
+        repoState.commits,
+        filename,
+        checkout
+      );
+      break;
     case "remote":
       updateState(
         viewGitInnerTextRemote,
@@ -164,9 +192,30 @@ function executeGitCommand(command, arg) {
       return gitLog();
     case "branch":
       return gitBranch(arg);
+    case "checkout":
+      return gitCheckout(arg);
     default:
       return { success: false, message: "알 수 없는 명령어입니다." };
   }
+}
+
+/**
+ *
+ * @param {*} name 브랜치명
+ * @param {*} files 브랜치에 저장할 files(type: array)
+ * @param {*} staging 브랜치에 저장할 staging(type: array)
+ * @param {*} commits 브랜치에 저장할 commits(type: array)
+ * @param {*} remote 브랜치에 저장할 remote(type: array)
+ */
+function addBranchStatus(name, files, staging, commits, remote) {
+  const branchData = {
+    name: name,
+    files: [...files],
+    staging: [...staging],
+    commits: [...commits],
+    remote: [...remote],
+  };
+  branches.push(branchData);
 }
 
 // git init
@@ -175,6 +224,7 @@ function gitInit() {
     return { success: false, message: "저장소가 이미 초기화되어 있습니다." };
   }
   repoState.isInitialized = true;
+  addBranchStatus("main", repoState.files, [], [], []);
   return { success: true, message: "빈 Git 저장소가 초기화되었습니다." };
 }
 
@@ -186,6 +236,9 @@ function gitClone() {
   repoState.isInitialized = true;
   repoState.branches["develop1"] = null;
   repoState.branches["develop2"] = null;
+  addBranchStatus("main", repoState.files, [], [], []);
+  addBranchStatus("develop1", repoState.files, [], [], []);
+  addBranchStatus("develop2", repoState.files, [], [], []);
   return { success: true, message: "원격 저장소 데이터를 불러옵니다." };
 }
 
@@ -371,9 +424,43 @@ function gitBranch(branchName) {
 
   // 브랜치 생성
   repoState.branches[branchName] = null;
+  addBranchStatus(branchName, repoState.files, repoState.staging, repoState.commits, viewState.remote);
   return {
     success: true,
     message: `${branchName} 브랜치가 새로 생성되었습니다.`,
+  };
+}
+
+function gitCheckout(branchName) {
+  const beforeBranch = branches.find(
+    (el) => el.name === repoState.currentBranch
+  );
+  const checkoutBranch = branches.find((el) => el.name === branchName);
+  console.log(checkoutBranch, "checkoutBranch");
+  beforeBranch.files = [...repoState.files];
+  beforeBranch.commits = [...repoState.commits];
+  beforeBranch.remote = [...viewState.remote];
+  console.log(beforeBranch, "beforeBranch");
+
+  const branchRepoState = {
+    isInitialized: true,
+    files: [...checkoutBranch.files],
+    staging: [],
+    commits: [...checkoutBranch.commits],
+    currentBranch: checkoutBranch.name,
+    branches: repoState.branches,
+    trackedFiles: {}, // 파일 이름을 키로, 마지막 커밋 이후 변경 여부를 값으로 가집니다.
+  };
+
+  repoState = branchRepoState;
+  viewState.remote = [...checkoutBranch.remote];
+  console.log(repoState, "repoState");
+  viewGitNow(checkoutBranch.files, "working");
+  viewGitNow(checkoutBranch.commits, "checkout");
+  // viewGitNow(checkoutBranch.remote, "remote");
+  return {
+    success: true,
+    message: `${branchName} 체크아웃`,
   };
 }
 
