@@ -181,12 +181,12 @@ function gitInit() {
 // git clone
 function gitClone() {
   if (repoState.isInitialized) {
-    return { success: false, message: "저장소가 이미 초기화되어 있습니다." };
+    return { success: false, message: "저장소가 불러와져 있는 상태입니다." };
   }
   repoState.isInitialized = true;
   repoState.branches["develop1"] = null;
   repoState.branches["develop2"] = null;
-  return { success: true, message: "클론 되었습니다" };
+  return { success: true, message: "원격 저장소 데이터를 불러옵니다." };
 }
 
 // git add .
