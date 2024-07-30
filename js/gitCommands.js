@@ -353,9 +353,9 @@ function gitPush() {
       if (existingFile) {
         existingFile.message = commit.message; // 메시지만 업데이트
       } else {
-        viewState.remote.push({ file, message: commit.message });
+        viewState.remote.push({ commitId: commit.id, file:file, message: commit.message });
       }
-      updatedFiles.push({ file, message: commit.message });
+      updatedFiles.push({ commitId: commit.id, file:file, message: commit.message });
     });
   });
 
@@ -490,6 +490,21 @@ function gitBranch(branchName) {
 }
 
 function gitCheckout(branchName) {
+  if (!repoState.isInitialized) {
+    return { success: false, message: "Git 저장소가 초기화되지 않았습니다." };
+  }
+
+  if (!branchName) {
+    return { success: false, message: "이동할 브랜치명을 입력해 주세요." };
+  }
+
+  if (!repoState.branches.hasOwnProperty(branchName)) {
+    return {
+      success: false,
+      message: `${branchName} 브랜치가 존재하지 않습니다. 브랜치명을 다시 한번 확인해 주세요.`,
+    };
+  }
+
   const beforeBranch = branches.find(
     (el) => el.name === repoState.currentBranch
   );
@@ -518,7 +533,7 @@ function gitCheckout(branchName) {
   // viewGitNow(checkoutBranch.remote, "remote");
   return {
     success: true,
-    message: `${branchName} 체크아웃`,
+    message: `${branchName}로 체크아웃 되었습니다.`,
   };
 }
 
