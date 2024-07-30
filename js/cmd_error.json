@@ -3,6 +3,7 @@
     {
       "command": "init",
       "error": "fatal: already a git repository",
+      "translation": "이미 git 저장소입니다.",
       "solution": "이미 git 저장소인 경우 init을 다시 할 필요가 없습니다."
     },
     {
@@ -14,47 +15,56 @@
     {
       "command": "commit",
       "error": "Aborting commit due to empty commit message",
+      "translation": "커밋 메시지가 비어있어서 커밋을 할 수 없습니다.",
       "solution": "커밋 메시지를 입력합니다. (예: git commit -m \"커밋 메시지\")"
     },
     {
       "command": "amend",
       "error": "fatal: You are in the middle of a merge -- cannot amend.",
+      "translation": "현재 병합 작업 중이라 커밋을 수정할 수 없습니다.",
       "solution": "현재 병합 중인 상태에서는 amend를 사용할 수 없습니다. 병합을 완료하거나 취소 후 사용합니다."
     },
     {
       "command": "status",
       "error": "fatal: not a git repository",
+      "translation": "이 폴더는 Git 저장소가 아닙니다.",
       "solution": "git 저장소 내에서 명령어를 실행하거나, git init으로 새 저장소를 생성합니다."
     },
     {
       "command": "log",
       "error": "fatal: your current branch 'main' does not have any commits yet",
+      "translation": "현재 브랜치 'main'에 아직 커밋이 없습니다.",
       "solution": "먼저 커밋을 생성한 후 log를 확인합니다."
     },
     {
       "command": "push",
       "error": "error: failed to push some refs",
+      "translation": "일부 변경사항을 원격 저장소로 푸시하는 데 실패했습니다.",
       "solution": "먼저 git pull을 실행하여 원격 변경사항을 가져온 후 다시 push합니다."
     },
     {
       "command": "pull",
       "error": "error: Your local changes would be overwritten by merge",
+      "translation": "병합 시 로컬의 변경사항이 사라질 수 있습니다.",
       "solution": "로컬 변경사항을 커밋하거나 stash한 후 pull을 실행합니다."
     },
     {
       "command": "clone",
       "error": "fatal: destination path 'repo' already exists and is not an empty directory",
+      "translation": "대상 경로 'repo'가 이미 존재하며 비어있지 않은 디렉토리입니다.",
       "solution": "클론할 디렉토리를 비우거나 다른 이름으로 클론합니다."
     },
 
     {
       "command": "branch",
       "error": "fatal: Not a valid object name: 'main'",
+      "translation": "'main'이라는 이름의 브랜치나 커밋을 찾을 수 없습니다.",
       "solution": "최소 하나의 커밋이 있어야 브랜치를 생성할 수 있습니다."
     },
     {
       "command": "checkout",
       "error": "error: pathspec '브랜치명' did not match any file(s) known to git",
+      "translation": "지정한 '브랜치명'이 git에 알려진 어떤 파일과도 일치하지 않습니다.",
       "solution": "브랜치 이름을 정확히 입력하거나, 해당 브랜치를 먼저 생성합니다."
     }
   ]
