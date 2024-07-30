@@ -196,6 +196,8 @@ function executeGitCommand(command, arg) {
       return gitBranch(arg);
     case "checkout":
       return gitCheckout(arg);
+    case "pull":
+      return gitPull(arg);
     default:
       return { success: false, message: "알 수 없는 명령어입니다." };
   }
@@ -360,6 +362,55 @@ function gitPush() {
   viewGitNow(updatedFiles, "remote");
 
   return { success: true, message: "변경사항이 원격 저장소에 푸시되었습니다." };
+}
+
+// git pull
+function gitPull(branchName) {
+  // 1. 저장소 초기화 확인
+  if (!repoState.isInitialized) {
+    return { success: false, message: "Git 저장소가 초기화되지 않았습니다." };
+  }
+
+  // 2. 브랜치명 입력 확인
+  if (!branchName) {
+    return { success: false, message: "브랜치명을 입력해 주세요." };
+  }
+
+  // 3. 브랜치 존재 확인
+  if (!repoState.branches.hasOwnProperty(branchName)) {
+    return {
+      success: false,
+      message: `${branchName} 브랜치가 존재하지 않습니다.`,
+    };
+  }
+
+  // 4. 브랜치 상태 가져오기
+  const branchToPull = branches.find((el) => el.name === branchName);
+  if (!branchToPull) {
+    return { success: false, message: `브랜치를 찾을 수 없습니다.` };
+  }
+
+  // 5. 브랜치에서 커밋 내용 가져오기 (푸시된 내용을 비교해서 적용하도록 수정 필요)
+  const branchHeadCommitId = repoState.branches[branchName];
+  // 체크아웃에 저장된 커밋아이디를 제외한 값을 저장 (logIds 참고)
+  // let arr = [];
+  // const branchHeadCommit = branchToPull.remote.filter(
+  //   (commit) => commit.commitId !== branchHeadCommitId
+  // );
+
+  // 6. 현재 브랜치에 내용 업데이트 (수정 필요)
+  repoState.files = [...branchToPull.files];
+  // repoState.commits = [...repoState.commits, ...branchHeadCommit];
+
+  // 7. 시각화 업데이트
+  viewGitNow(repoState.files, "working");
+  viewGitNow(repoState.commits, "checkout");
+
+  //8. 결과반환
+  return {
+    success: true,
+    message: `${branchName} 브랜치에서 변경 사항을 가져와서 현재 브랜치에 병합했습니다.`,
+  };
 }
 
 // git status

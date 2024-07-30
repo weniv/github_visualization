@@ -56,6 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
       case "push":
         result = executeGitCommand("push");
         break;
+      case "pull":
+        result = executeGitCommand("pull", commandText.value);
+        commandText.value = "";
+        break;
       case "branch":
         result = executeGitCommand("branch", commandText.value);
         commandText.value = "";
@@ -69,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
         commandText.value = "";
         break;
       case "amend":
-      case "pull":
 
       // case 'add':
       //
