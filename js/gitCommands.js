@@ -353,9 +353,17 @@ function gitPush() {
       if (existingFile) {
         existingFile.message = commit.message; // 메시지만 업데이트
       } else {
-        viewState.remote.push({ commitId: commit.id, file:file, message: commit.message });
+        viewState.remote.push({
+          commitId: commit.id,
+          file: file,
+          message: commit.message,
+        });
       }
-      updatedFiles.push({ commitId: commit.id, file:file, message: commit.message });
+      updatedFiles.push({
+        commitId: commit.id,
+        file: file,
+        message: commit.message,
+      });
     });
   });
 
@@ -384,32 +392,50 @@ function gitPull(branchName) {
     };
   }
 
-  // 4. 브랜치 상태 가져오기
-  const branchToPull = branches.find((el) => el.name === branchName);
+  // 4. 현재 브랜치와 지정된 브랜치의 상태 가져오기
+  const currentBranchName = repoState.currentBranch;
+  const currentBranchData = branches.find(
+    (branch) => branch.name === currentBranchName
+  );
+  const branchToPull = branches.find((branch) => branch.name === branchName);
+
   if (!branchToPull) {
     return { success: false, message: `브랜치를 찾을 수 없습니다.` };
   }
 
-  // 5. 브랜치에서 커밋 내용 가져오기 (푸시된 내용을 비교해서 적용하도록 수정 필요)
-  const branchHeadCommitId = repoState.branches[branchName];
-  // 체크아웃에 저장된 커밋아이디를 제외한 값을 저장 (logIds 참고)
-  // let arr = [];
-  // const branchHeadCommit = branchToPull.remote.filter(
-  //   (commit) => commit.commitId !== branchHeadCommitId
-  // );
+  // 5. 최신 커밋 ID를 기준으로 비교
+  const latestCommitIdInBranch =
+    branchToPull.commits.length > 0
+      ? branchToPull.commits[branchToPull.commits.length - 1].id
+      : null;
+  const latestCommitIdInCurrentBranch =
+    currentBranchData.commits.length > 0
+      ? currentBranchData.commits[currentBranchData.commits.length - 1].id
+      : null;
 
-  // 6. 현재 브랜치에 내용 업데이트 (수정 필요)
+  // 6. 원격 브랜치에 새로운 커밋이 있는지 확인
+  if (latestCommitIdInBranch === latestCommitIdInCurrentBranch) {
+    return {
+      success: false,
+      message:
+        "원격 레포지토리 새로운 변경 사항이 없습니다. Push 후 다시 시도해 주세요.",
+    };
+  }
+
+  // 7. 브랜치 상태 업데이트
   repoState.files = [...branchToPull.files];
-  // repoState.commits = [...repoState.commits, ...branchHeadCommit];
+  repoState.staging = []; // 클리어 스테이징 영역
+  repoState.commits = [...branchToPull.commits];
+  viewState.remote = [...branchToPull.remote];
 
-  // 7. 시각화 업데이트
+  // 8. 시각화 업데이트
   viewGitNow(repoState.files, "working");
   viewGitNow(repoState.commits, "checkout");
+  viewGitNow(viewState.remote, "remote");
 
-  //8. 결과반환
   return {
     success: true,
-    message: `${branchName} 브랜치에서 변경 사항을 가져와서 현재 브랜치에 병합했습니다.`,
+    message: `${branchName} 브랜치에서 최신 변경 사항을 가져와서 현재 브랜치에 병합했습니다.`,
   };
 }
 
