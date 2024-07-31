@@ -214,10 +214,10 @@ function executeGitCommand(command, arg) {
 function addBranchStatus(name, files, staging, commits, remote) {
   const branchData = {
     name: name,
-    files: [...files],
-    staging: [...staging],
-    commits: [...commits],
-    remote: [...remote],
+    files: JSON.parse(JSON.stringify(files)),
+    staging: JSON.parse(JSON.stringify(staging)),
+    commits: JSON.parse(JSON.stringify(commits)),
+    remote: JSON.parse(JSON.stringify(remote)),
   };
   branches.push(branchData);
 }
@@ -510,9 +510,9 @@ function gitCheckout(branchName) {
   );
   const checkoutBranch = branches.find((el) => el.name === branchName);
   console.log(checkoutBranch, "checkoutBranch");
-  beforeBranch.files = [...repoState.files];
-  beforeBranch.commits = [...repoState.commits];
-  beforeBranch.remote = [...viewState.remote];
+  beforeBranch.files = JSON.parse(JSON.stringify(repoState.files));
+  beforeBranch.commits = JSON.parse(JSON.stringify(repoState.commits));
+  beforeBranch.remote = JSON.parse(JSON.stringify(viewState.remote));
   console.log(beforeBranch, "beforeBranch");
 
   const branchRepoState = {
