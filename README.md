@@ -61,12 +61,28 @@
     * 튜토리얼 구현(JSON 형태로 구현)
     * hover 했을 때 나오는 메시지 구현
 
-## 폴더와 파일 구조
-### JSON 파일 구조
-* cmd_ko_explain.json → Git 명령어 설명(한국어)
-* cmd_en_explain.json → Git 명령어 설명(영어)
-* cmd_error.json → Git 에러메시지 설명
-* tutorial.json → Git 명령어 연습 튜토리얼
+## 폴더와 파일 구조 및 목적
+github_visualization        →   
+ ┣ css
+ ┃ ┣ components.css         →   
+ ┃ ┣ reset.css              →   
+ ┃ ┗ style.css              →   
+ ┣ images
+ ┃ ┣ git_logo.svg           →   
+ ┃ ┣ ico_download.svg       →   
+ ┃ ┣ ico_help.svg           →   
+ ┃ ┗ ico_refresh.svg        →   
+ ┣ js
+ ┃ ┣ cmd_en_explain.json    →   Git 명령어 설명을 영문으로 작성하였습니다.
+ ┃ ┣ cmd_error.json         →   Git 에러메시지 해석과 해결 방안을 작성하였습니다.
+ ┃ ┣ cmd_ko_explain.json    →   Git 명령어 설명을 한국어로 작성하였습니다.
+ ┃ ┣ gitCommands.js         →   
+ ┃ ┣ main.js                →   
+ ┃ ┣ tutorial.json          →   Git 명령어를 연습할 수 있는 튜토리얼이 있습니다.
+ ┃ ┗ visualizer.js          →   
+ ┣ CNAME
+ ┣ index.html
+ ┗ README.md
 
 ## 오픈소스 기여자
 * 강지혜
