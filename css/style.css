@@ -24,7 +24,7 @@ body {
     scrollbar-width: none;
 }
 
-svg{
+svg {
     overflow: visible;
 }
 
@@ -55,7 +55,7 @@ html {
     --black-color: #222222;
     --point-color: #f74e27;
     --green-color: #06bf66;
-    --bg-color:#F4F6F8;
+    --bg-color: #f4f6f8;
     --lightgray-color: #f0f2f4;
     --lightgray-color-50: #eeeff3;
     --gray-color: #d3d7d9;
@@ -86,7 +86,7 @@ header {
 
 /*----- 로고영역 -----*/
 
-header h1{
+header h1 {
     width: 23%;
     padding: 0 4rem;
 }
@@ -182,7 +182,6 @@ main {
     display: none; /* Chrome, Safari, Opera*/
 }
 
-
 .dictionary {
     margin-top: 4rem;
 }
@@ -258,16 +257,15 @@ main {
     padding: 4rem;
 }
 
-
 .practice {
     display: grid;
     grid-template-columns: minmax(max-content, 70%) minmax(max-content, 30%);
     grid-template-rows: 76% 24%;
     gap: 3.2rem;
     background-color: var(--bg-color);
-    grid-template-areas: 
-        "item1 item2"
-        "item3 item3";
+    grid-template-areas:
+        'item1 item2'
+        'item3 item3';
 }
 
 @media (max-width: 1200px) {
@@ -276,12 +274,12 @@ main {
         overflow-x: hidden;
         grid-template-columns: 1fr;
         grid-template-rows: auto;
-        grid-template-areas: 
-            "item1"
-            "item2"
-            "item3";
+        grid-template-areas:
+            'item1'
+            'item2'
+            'item3';
     }
-    .visualization{
+    .visualization {
         height: 400px;
     }
 }
@@ -291,17 +289,17 @@ main {
     overflow-y: auto;
 }
 
-.status li{
+.status li {
     margin-top: 20px;
     display: flex;
     gap: 4px;
 }
 
-.status li:nth-child(1){
+.status li:nth-child(1) {
     margin-top: 0px;
 }
 
-.status p{
+.status p {
     color: #637381;
     max-width: 304px;
     overflow: hidden;
@@ -321,25 +319,31 @@ main {
     grid-area: item2;
 }
 
-.status__dot{
+.status__dot {
     margin: 7px;
     border-radius: 3px;
     width: 6px;
     height: 6px;
-    background-color: #D3D7D9;
+    background-color: #d3d7d9;
 }
 
 @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.01; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.01;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .dot-blink {
     animation: blink 3s infinite;
 }
 
-.status__text{
+.status__text {
     margin-top: 4px;
 }
 
@@ -350,14 +354,12 @@ main {
 .output {
     grid-area: item3;
     background-color: white;
-    border: 1px solid #bdc3c7;
     border-radius: 5px;
     padding: 20px;
 }
 
-.visualization__area{
+.visualization__area {
     height: 100%;
-    
 }
 
 .visualization__head {
@@ -367,12 +369,12 @@ main {
     justify-content: space-between;
 }
 
-.visualization__body{
+.visualization__body {
     position: relative;
     top: -75px;
     left: -40px;
     height: calc(100% + 78px);
-    width:calc(100% + 80px);
+    width: calc(100% + 80px);
     overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
