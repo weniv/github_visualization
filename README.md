@@ -62,6 +62,7 @@
     * hover 했을 때 나오는 메시지 구현
 
 ## 폴더와 파일 구조 및 목적
+```
 github_visualization(root)
  ┣ css
  ┃ ┣ components.css         →   
@@ -83,6 +84,7 @@ github_visualization(root)
  ┣ CNAME
  ┣ index.html               →   
  ┗ README.md                →   
+ ```
 
 ## 오픈소스 기여자
 * 강지혜
