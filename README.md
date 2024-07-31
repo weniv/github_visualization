@@ -62,28 +62,7 @@
     * hover 했을 때 나오는 메시지 구현
 
 ## 폴더와 파일 구조
-github_visualization
- ┣ css
- ┃ ┣ components.css
- ┃ ┣ reset.css
- ┃ ┗ style.css
- ┣ images
- ┃ ┣ git_logo.svg
- ┃ ┣ ico_download.svg
- ┃ ┣ ico_help.svg
- ┃ ┗ ico_refresh.svg
- ┣ js
- ┃ ┣ cmd_en_explain.json
- ┃ ┣ cmd_error.json
- ┃ ┣ cmd_ko_explain.json
- ┃ ┣ gitCommands.js
- ┃ ┣ main.js
- ┃ ┣ tutorial.json
- ┃ ┗ visualizer.js
- ┣ CNAME
- ┣ index.html
- ┗ README.md
-### JSON 파일 목적
+### JSON 파일 구조
 * cmd_ko_explain.json → Git 명령어 설명(한국어)
 * cmd_en_explain.json → Git 명령어 설명(영어)
 * cmd_error.json → Git 에러메시지 설명
@@ -140,6 +119,13 @@ github_visualization
 6. 튜토리얼을 사용할 때 모바일보다는 pc에 집중하는 것이 좋겠습니다.
 7. 명령어 - 튜토리얼 json 합치기로 했습니다.
 8. 모든 명령어 개발팀에서 제작하는 json파일명에 cmd_ ... 형태로 작성하기로 하였습니다.
+```
+* 7월 31일
+```
+1. 지난 회의에서 명령어 - 튜토리얼 json 합치기로 하였는데 튜토리얼에 설명을 상세하게 적으면서 다시 분리하기로 하였습니다.
+2. 용어에 대한 설명은 지금 단계에선 크게 신경쓰지 않는 것으로 하였습니다.
+3. Local, Remote 레포지토리에서 보여지는 로그들은 git log에 나오는 정보들을 집어넣는 것이 맞다는 의견이 나왔습니다.
+4. 폴더 구조 + 파일 목적 README.md에 적기로 하였습니다.
 ```
 
 ## 컨벤션
