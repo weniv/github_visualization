@@ -50,6 +50,16 @@ function resetDotColors() {
   });
 }
 
+// 로그 반환해주는 함수
+function getLogs(arr) {
+  const logs = arr.map((el) => {
+    const log = `${el.id || el.commitId}[${el.message}]`;
+    return `${log}`;
+  });
+
+  return logs;
+}
+
 // directory 관련 변수
 const commit = "commit";
 const remote = "remote";
@@ -65,56 +75,17 @@ function updateState(
   //   stateArray.push(filename);
   // }
 
-  if (directory === commit || directory === checkout) {
+  if (directory === commit || directory === remote) {
     viewGitInnerTextStaging.textContent = "";
-    if (directory === commit) {
-      // commit일 때
-      const commitText = stateArray.map((el) => {
-        return `(message:${el.message}, file:${el.files
-          .map((file) => file)
-          .join(", ")}
-          )`;
-      });
+    const commitText = getLogs(stateArray);
 
-      viewElement.insertAdjacentHTML(
-        "beforeend",
-        commitText[commitText.length - 1]
-      );
-    } else {
-      // checkout일 때
-      const pushText = viewState.remote.map(
-        (el) => `${el.file}: ${el.message}`
-      );
-      const logIds = new Set(viewState.remote.map((el) => el.commitId));
-      const commitText = stateArray.map((el) => {
-        if (logIds.has(el.id)) {
-          return `<span>${el.id}[${el.files
-            .map((file) => file)
-            .join(", ")}]</span>`;
-        } else {
-          return `(message:${el.message}, file:${el.files
-            .map((file) => file)
-            .join(", ")}
-            )`;
-        }
-      });
+    viewElement.innerText = commitText.join(",\n");
+  } else if(directory === checkout) {
+    const commitText = getLogs(stateArray);
+    const pushText = getLogs(viewState.remote);
 
-      viewGitInnerTextLocal.textContent = "";
-      viewGitInnerTextRemote.innerText = pushText.join("\n");
-      viewElement.insertAdjacentHTML("beforeend", commitText.join("\n"));
-    }
-  } else if (directory === remote) {
-    // remote일 때
-    const commitText = repoState.commits.map((el) => {
-      const log = `${el.id}[${el.files.map((file) => file).join(", ")}]`;
-      return `<span>${log}</span>`;
-    });
-
-    const pushText = stateArray.map((el) => `${el.file}: ${el.message}`);
-    viewElement.innerText = pushText.join("\n");
-
-    viewGitInnerTextLocal.textContent = "";
-    viewGitInnerTextLocal.insertAdjacentHTML("beforeend", commitText.join(""));
+    viewElement.innerText = commitText.join(",\n");
+    viewGitInnerTextRemote.innerText = pushText.join(",\n");
   } else {
     // 그 외
     viewElement.innerText = `${stateArray.join(", ")}`;
@@ -165,7 +136,7 @@ function viewGitNow(filename, status) {
       updateState(
         viewGitInnerTextRemote,
         dotRemote,
-        viewState.remote,
+        repoState.commits,
         filename,
         remote
       );
@@ -528,6 +499,13 @@ function gitCheckout(branchName) {
     return {
       success: false,
       message: `${branchName} 브랜치가 존재하지 않습니다. 브랜치명을 다시 한번 확인해 주세요.`,
+    };
+  }
+
+  if (repoState.currentBranch === branchName) {
+    return {
+      success: false,
+      message: `${branchName} 브랜치는 현재 브랜치입니다.`,
     };
   }
 
