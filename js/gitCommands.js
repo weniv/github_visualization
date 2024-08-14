@@ -80,7 +80,7 @@ function updateState(
     const commitText = getLogs(stateArray);
 
     viewElement.innerText = commitText.join(",\n");
-  } else if(directory === checkout) {
+  } else if (directory === checkout) {
     const commitText = getLogs(stateArray);
     const pushText = getLogs(viewState.remote);
 
@@ -376,12 +376,12 @@ function gitPull(branchName) {
 
   // 5. 최신 커밋 ID를 기준으로 비교
   const latestCommitIdInBranch =
-    branchToPull.commits.length > 0
-      ? branchToPull.commits[branchToPull.commits.length - 1].id
+    branchToPull.remote.length > 0
+      ? branchToPull.remote[branchToPull.remote.length - 1].commitId
       : null;
   const latestCommitIdInCurrentBranch =
-    currentBranchData.commits.length > 0
-      ? currentBranchData.commits[currentBranchData.commits.length - 1].id
+    currentBranchData.remote.length > 0
+      ? currentBranchData.remote[currentBranchData.remote.length - 1].commitId
       : null;
 
   // 6. 원격 브랜치에 새로운 커밋이 있는지 확인
