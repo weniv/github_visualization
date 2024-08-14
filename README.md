@@ -89,7 +89,7 @@ github_visualization(root)
  ┃ ┣ cmd_en_explain.json    →   Git 명령어 설명을 영문으로 작성
  ┃ ┣ cmd_error.json         →   Git 에러메시지 해석과 해결 방안을 작성
  ┃ ┣ cmd_ko_explain.json    →   Git 명령어 설명을 한국어로 작성
- ┃ ┣ gitCommands.js         →
+ ┃ ┣ gitCommands.js         →   가상의 Git 저장소 상태를 관리하고 Git 명령어를 시뮬레이션하는 스크립트
  ┃ ┣ main.js                →
  ┃ ┣ tutorial.json          →   Git 명령어를 연습할 수 있는 튜토리얼 작성
  ┃ ┗ visualizer.js          →
