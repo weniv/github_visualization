@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const outputPanel = document.getElementById("command-output");
   const commandText = document.getElementById("command-text");
   const refreshBtn = document.querySelector(".btn-refresh");
+  const cliTextField = document.getElementById("cli-text-field");
 
   function refresh() {
     location.reload();
@@ -20,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const command = event.target.id.replace("btn-", "");
     let result;
     let fileName;
+
+    cliTextField.value += `git ${command} ${commandText.value.trim()}\n`;
 
     switch (command) {
       case "init":
