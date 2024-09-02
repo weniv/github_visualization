@@ -42,13 +42,14 @@ let viewState = {
   remote: [],
 };
 
-// 상태표시 영역 작동 함수 (좋은 의견 공유 바랍니다...)
+// 상태표시 영역 작동 함수
 function resetDotColors() {
   [dotWorking, dotStaging, dotLocal, dotRemote].forEach((dot) => {
     dot.classList.remove("dot-blink");
     dot.style.backgroundColor = "#D3D7D9";
   });
 }
+
 
 // 로그 반환해주는 함수
 function getLogs(arr) {
