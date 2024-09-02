@@ -574,3 +574,22 @@ function getCurrentRepoState() {
 window.executeGitCommand = executeGitCommand;
 window.createFileAction = createFileAction;
 window.getCurrentRepoState = getCurrentRepoState;
+
+// CLI 
+const btnPractice = document.getElementById("btn-practice");
+const btnCli = document.getElementById("btn-cli");
+const cliHidden = document.getElementById("cli-hidden");
+const commandPanelWithText = document.getElementById("command-panel-with-text");
+const commandPanelWithoutText = document.getElementById("command-panel-without-text");
+
+btnCli.addEventListener("click", function() {
+  cliHidden.style.display = "block";
+  commandPanelWithText.style.display = "none";
+  commandPanelWithoutText.style.display = "none";
+})
+
+btnPractice.addEventListener("click", function() {
+  cliHidden.style.display = "none";
+  commandPanelWithText.style.display = "block";
+  commandPanelWithoutText.style.display = "block";
+})
