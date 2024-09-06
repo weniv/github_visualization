@@ -9,7 +9,7 @@ let repoState = {
   trackedFiles: {}, // 파일 이름을 키로, 마지막 커밋 이후 변경 여부를 값으로 가집니다.
 };
 
-const branches = [];
+let branches = [];
 
 // 화면 우측 Git 상태표시 영역의 id값
 const elements = [
@@ -49,7 +49,6 @@ function resetDotColors() {
     dot.style.backgroundColor = "#D3D7D9";
   });
 }
-
 
 // 로그 반환해주는 함수
 function getLogs(arr) {
@@ -315,31 +314,34 @@ function gitPush() {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
 
-  // 새로운 커밋의 값과 비교하여
-  // 이미 remote Repository에 있는 파일은 메시지만 변경
-  // 파일이 없다면 파일과 메시지를 추가
-  const updatedFiles = [];
-  repoState.commits.forEach((commit) => {
-    commit.files.forEach((file) => {
-      const existingFile = viewState.remote.find((f) => f.file === file);
-      if (existingFile) {
-        existingFile.message = commit.message; // 메시지만 업데이트
-      } else {
-        viewState.remote.push({
-          commitId: commit.id,
-          file: file,
-          message: commit.message,
-        });
-      }
-      updatedFiles.push({
-        commitId: commit.id,
-        file: file,
-        message: commit.message,
-      });
+  // 현재 브랜치의 remote 상태 가져오기
+  const currentBranch = branches.find(
+    (b) => b.name === repoState.currentBranch
+  );
+  if (!currentBranch) {
+    return { success: false, message: "현재 브랜치를 찾을 수 없습니다." };
+  }
+
+  // 새로운 커밋만 remote에 추가
+  const newCommits = repoState.commits.filter(
+    (commit) =>
+      !currentBranch.remote.some(
+        (remoteCommit) => remoteCommit.commitId === commit.id
+      )
+  );
+
+  newCommits.forEach((commit) => {
+    currentBranch.remote.push({
+      commitId: commit.id,
+      file: commit.files,
+      message: commit.message,
     });
   });
 
-  viewGitNow(updatedFiles, "remote");
+  // viewState.remote 업데이트
+  viewState.remote = [...currentBranch.remote];
+
+  viewGitNow(viewState.remote, "remote");
 
   return { success: true, message: "변경사항이 원격 저장소에 푸시되었습니다." };
 }
@@ -473,14 +475,17 @@ function gitBranch(branchName) {
   }
 
   // 브랜치 생성
-  repoState.branches[branchName] = null;
-  addBranchStatus(
-    branchName,
-    repoState.files,
-    repoState.staging,
-    repoState.commits,
-    viewState.remote
-  );
+  if (repoState.branches[branchName] === undefined) {
+    repoState.branches[branchName] = null;
+    addBranchStatus(
+      branchName,
+      repoState.files,
+      repoState.staging,
+      repoState.commits,
+      viewState.remote
+    );
+  }
+
   return {
     success: true,
     message: `${branchName} 브랜치가 새로 생성되었습니다.`,
@@ -510,29 +515,34 @@ function gitCheckout(branchName) {
     };
   }
 
-  const beforeBranch = branches.find(
-    (el) => el.name === repoState.currentBranch
+  // 현재 브랜치 상태 저장
+  const currentBranch = branches.find(
+    (b) => b.name === repoState.currentBranch
   );
-  const checkoutBranch = branches.find((el) => el.name === branchName);
-  console.log(checkoutBranch, "checkoutBranch");
-  beforeBranch.files = JSON.parse(JSON.stringify(repoState.files));
-  beforeBranch.commits = JSON.parse(JSON.stringify(repoState.commits));
-  beforeBranch.remote = JSON.parse(JSON.stringify(viewState.remote));
-  console.log(beforeBranch, "beforeBranch");
+  if (currentBranch) {
+    currentBranch.files = [...repoState.files];
+    currentBranch.staging = [...repoState.staging];
+    currentBranch.commits = [...repoState.commits];
+    // remote 상태는 그대로 유지
+  }
 
-  const branchRepoState = {
-    isInitialized: true,
+  // 체크아웃할 브랜치 상태 로드
+  const checkoutBranch = branches.find((b) => b.name === branchName);
+  if (!checkoutBranch) {
+    return { success: false, message: "브랜치 상태를 찾을 수 없습니다." };
+  }
+
+  // repoState 업데이트
+  repoState = {
+    ...repoState,
     files: [...checkoutBranch.files],
-    staging: [],
+    staging: [...checkoutBranch.staging],
     commits: [...checkoutBranch.commits],
-    currentBranch: checkoutBranch.name,
-    branches: repoState.branches,
-    trackedFiles: {}, // 파일 이름을 키로, 마지막 커밋 이후 변경 여부를 값으로 가집니다.
+    currentBranch: branchName,
   };
 
-  repoState = branchRepoState;
-  viewState.remote = [...checkoutBranch.remote];
-  console.log(repoState, "repoState");
+  viewState.remote = checkoutBranch.remote;
+
   viewGitNow(checkoutBranch.files, "working");
   viewGitNow(checkoutBranch.commits, "checkout");
   // viewGitNow(checkoutBranch.remote, "remote");
@@ -575,21 +585,23 @@ window.executeGitCommand = executeGitCommand;
 window.createFileAction = createFileAction;
 window.getCurrentRepoState = getCurrentRepoState;
 
-// CLI 
+// CLI
 const btnPractice = document.getElementById("btn-practice");
 const btnCli = document.getElementById("btn-cli");
 const cliHidden = document.getElementById("cli-hidden");
 const commandPanelWithText = document.getElementById("command-panel-with-text");
-const commandPanelWithoutText = document.getElementById("command-panel-without-text");
+const commandPanelWithoutText = document.getElementById(
+  "command-panel-without-text"
+);
 
-btnCli.addEventListener("click", function() {
+btnCli.addEventListener("click", function () {
   cliHidden.style.display = "block";
   commandPanelWithText.style.display = "none";
   commandPanelWithoutText.style.display = "none";
-})
+});
 
-btnPractice.addEventListener("click", function() {
+btnPractice.addEventListener("click", function () {
   cliHidden.style.display = "none";
   commandPanelWithText.style.display = "block";
   commandPanelWithoutText.style.display = "block";
-})
+});
