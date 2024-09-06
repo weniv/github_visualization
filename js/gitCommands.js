@@ -310,7 +310,7 @@ function gitPush() {
   if (!repoState.isInitialized) {
     return { success: false, message: "Git 저장소가 초기화되지 않았습니다." };
   }
-  if (repoState.commits.length === 0) {
+  if ((repoState.commits.length === 0) || (repoState.commits.length === viewState.remote.length)) {
     return { success: false, message: "푸시할 커밋이 없습니다." };
   }
 
